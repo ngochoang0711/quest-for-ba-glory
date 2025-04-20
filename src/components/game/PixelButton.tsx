@@ -2,6 +2,28 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
+type BaseButtonProps = {
+  children: React.ReactNode;
+  className?: string;
+  disabled?: boolean;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+export const BaseButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
+  ({ children, className, disabled, ...props }, ref) => {
+    return (
+      <button
+        ref={ref}
+        className={cn("pixel-base", className)}
+        disabled={disabled}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  }
+);
+BaseButton.displayName = "BaseButton";
+
 type PixelButtonProps = {
   children: React.ReactNode;
   color?: "blue" | "green" | "purple";
@@ -13,7 +35,7 @@ type PixelButtonProps = {
 const PixelButton = ({ 
   children, 
   color = "blue", 
-  className, 
+  className,
   onClick,
   disabled = false
 }: PixelButtonProps) => {
@@ -24,19 +46,17 @@ const PixelButton = ({
   }[color];
 
   return (
-    <button 
+    <BaseButton 
       className={cn(
-        "pixel-button", 
-        buttonClass, 
-        className,
-        disabled && "opacity-50 cursor-not-allowed",
-        "hover:brightness-110 active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_#131613]"
-      )} 
+        "pixel-button",
+        buttonClass,
+        className
+      )}
       onClick={!disabled ? onClick : undefined}
       disabled={disabled}
     >
       {children}
-    </button>
+    </BaseButton>
   );
 };
 

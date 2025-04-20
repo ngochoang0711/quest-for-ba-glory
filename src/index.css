@@ -1,19 +1,29 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.pixel-button {
-  @apply font-retro text-white py-2 px-4 rounded border-2 border-game-pixel-black shadow-[4px_4px_0px_0px_#131613] transition-all duration-100 ease-in-out;
-}
+@layer components {
+  .pixel-base {
+    @apply font-retro transition-all duration-100 ease-in-out;
+  }
 
-.pixel-button-blue {
-  @apply bg-game-blue-dark;
-}
+  .pixel-button {
+    @apply pixel-base text-white py-2 px-4 rounded border-2 border-game-pixel-black;
+    @apply shadow-[4px_4px_0px_0px_#131613];
+    @apply hover:brightness-110 active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_#131613];
+    @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:brightness-100 disabled:active:translate-y-0;
+  }
 
-.pixel-button-green {
-  @apply bg-game-green-dark;
-}
+  .pixel-button-blue {
+    @apply bg-game-blue-dark hover:bg-game-blue-dark/90;
+  }
 
-.pixel-button-purple {
-  @apply bg-game-purple-dark;
+  .pixel-button-green {
+    @apply bg-game-green-dark hover:bg-game-green-dark/90;
+  }
+
+  .pixel-button-purple {
+    @apply bg-game-purple-dark hover:bg-game-purple-dark/90;
+  }
 }
