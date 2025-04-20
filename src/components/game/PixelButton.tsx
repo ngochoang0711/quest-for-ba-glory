@@ -7,13 +7,15 @@ type PixelButtonProps = {
   color?: "blue" | "green" | "purple";
   className?: string;
   onClick?: () => void;
+  disabled?: boolean;
 };
 
 const PixelButton = ({ 
   children, 
   color = "blue", 
   className, 
-  onClick 
+  onClick,
+  disabled = false
 }: PixelButtonProps) => {
   const buttonClass = {
     blue: "pixel-button-blue",
@@ -23,8 +25,15 @@ const PixelButton = ({
 
   return (
     <button 
-      className={cn(buttonClass, className)} 
-      onClick={onClick}
+      className={cn(
+        "pixel-button", 
+        buttonClass, 
+        className,
+        disabled && "opacity-50 cursor-not-allowed",
+        "hover:brightness-110 active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_#131613]"
+      )} 
+      onClick={!disabled ? onClick : undefined}
+      disabled={disabled}
     >
       {children}
     </button>

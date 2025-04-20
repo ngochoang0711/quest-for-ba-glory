@@ -1,115 +1,16 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-body {
-  @apply bg-gray-100;
-}
-
-/* Apply to the main container for the pixelated look */
-.pixelated-bg {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAAAAAAJF6nAAAAEElEQVQI12P4//8/w+n4H4hgZQDiuQMCBiemoAAAAABJRU5ErkJggg==");
-}
-
-/* General styles for the pixel look */
-.pixel-container {
-  box-shadow: 4px 4px 0px 0px #131613;
-  border: 4px solid #131613;
-}
-
-/* Retro font */
-.font-retro {
-  font-family: 'Press Start 2P', cursive;
-}
-
-/* Game title style */
-.game-title {
-  @apply font-retro text-4xl text-center text-game-blue-dark;
-  text-shadow: 2px 2px 0px #131613;
-}
-
-/* Level badge style */
-.level-badge {
-  @apply bg-game-blue-light text-white text-xs font-retro px-2 py-1 rounded border-2 border-game-pixel-black;
-}
-
-/* Pixel button styles */
 .pixel-button {
-  @apply font-retro text-white py-2 px-4 rounded border-2 border-game-pixel-black shadow-[4px_4px_0px_0px_#131613] transition-all;
+  @apply font-retro text-white py-2 px-4 rounded border-2 border-game-pixel-black shadow-[4px_4px_0px_0px_#131613] transition-all duration-100 ease-in-out;
 }
 
-.pixel-button:hover {
-  @apply shadow-[2px_2px_0px_0px_#131613] translate-x-[2px] translate-y-[2px];
+.pixel-button-blue {
+  @apply bg-game-blue-dark;
 }
 
-.pixel-button:active {
-  @apply shadow-none translate-x-[4px] translate-y-[4px];
+.pixel-button-green {
+  @apply bg-game-green-dark;
 }
 
-/* Pixel progress bar */
-.pixel-progress {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w+n4H4hgZQDiuQMCBiemoAAAAABJRU5ErkJggg==");
-  image-rendering: pixelated;
-  background-repeat: repeat-x;
+.pixel-button-purple {
+  @apply bg-game-purple-dark;
 }
-
-/* Loading screen styles */
-.loading-screen {
-  @apply flex flex-col items-center justify-center h-screen bg-game-pixel-black text-white font-retro;
-}
-
-.loading-bar-container {
-  @apply w-64 h-4 bg-gray-800 rounded-full overflow-hidden relative;
-}
-
-.loading-bar {
-  @apply absolute top-0 left-0 h-full bg-game-green-light transition-all duration-700 ease-linear;
-}
-
-/* Dialog box styles */
-.dialog-box {
-  @apply p-4 border-4 shadow-[4px_4px_0px_0px_#131613];
-}
-
-/* Skill tree styles */
-.skill-tree {
-  @apply flex flex-col items-center;
-}
-
-.skill-node {
-  @apply w-32 h-32 flex items-center justify-center rounded-full border-4 border-game-pixel-black shadow-[4px_4px_0px_0px_#131613] font-retro text-white text-center;
-}
-
-/* Pixel location styling for map */
-.pixel-location {
-  @apply border-4 shadow-[4px_4px_0px_0px_#131613] relative z-10 transition-all;
-}
-
-.pixel-location:hover {
-  transform: translateY(-2px);
-  @apply shadow-[4px_4px_6px_0px_rgba(19,22,19,0.5)];
-}
-
-.pixel-location::before {
-  content: '';
-  @apply absolute -bottom-2 -right-2 w-full h-full bg-black opacity-10 z-[-1];
-}
-
-/* Float animation for map items */
-.float {
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
-
-/* Additional styling for existing elements */
