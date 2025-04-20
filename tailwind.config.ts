@@ -52,6 +52,18 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Retro game colors
+				game: {
+					'blue-dark': '#0078D7',
+					'blue-light': '#5DB9FF',
+					'green-dark': '#058C42',
+					'green-light': '#16DB93',
+					'purple-dark': '#8A4FFF',
+					'purple-light': '#C2A0FF',
+					'pixel-black': '#131613',
+					'pixel-white': '#F5F5F5',
+					'pixel-gray': '#9BADB7',
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

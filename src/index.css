@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Press Start 2P';
+  src: url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+  font-display: swap;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -35,19 +41,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -97,5 +96,146 @@
 
   body {
     @apply bg-background text-foreground;
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20zm20-20h20v20H20V0z' fill='%23f9f9f9' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+  }
+}
+
+@layer components {
+  .pixel-art {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+  
+  .pixel-borders {
+    border-style: solid;
+    border-width: 4px;
+    border-color: #131613;
+    box-shadow: 0 0 0 4px #9BADB7;
+    position: relative;
+  }
+  
+  .pixel-borders::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+  }
+  
+  .pixel-button {
+    @apply font-retro text-sm md:text-base px-5 py-2 border-4 border-game-pixel-black 
+           shadow-[4px_4px_0px_0px_#131613] hover:shadow-[2px_2px_0px_0px_#131613] 
+           active:shadow-[0px_0px_0px_0px_#131613] hover:translate-y-1 hover:translate-x-1
+           active:translate-y-2 active:translate-x-2 transition-all duration-100;
+  }
+  
+  .pixel-button-blue {
+    @apply pixel-button bg-game-blue-light hover:bg-game-blue-dark text-white;
+  }
+  
+  .pixel-button-green {
+    @apply pixel-button bg-game-green-light hover:bg-game-green-dark text-white;
+  }
+  
+  .pixel-button-purple {
+    @apply pixel-button bg-game-purple-light hover:bg-game-purple-dark text-white;
+  }
+  
+  .pixel-container {
+    @apply bg-white p-4 border-4 border-game-pixel-black shadow-[8px_8px_0px_0px_#131613];
+  }
+  
+  .dialog-box {
+    @apply pixel-container p-4 md:p-6 relative;
+  }
+  
+  .character-sprite {
+    @apply pixel-art w-16 h-16 md:w-24 md:h-24 object-contain;
+  }
+  
+  .game-title {
+    @apply font-retro text-3xl md:text-5xl text-game-blue-dark mb-4 drop-shadow-[4px_4px_0px_#131613];
+  }
+  
+  .level-badge {
+    @apply inline-block bg-game-purple-light text-white font-retro text-xs px-2 py-1 
+           border-2 border-game-pixel-black rounded;
+  }
+  
+  .pixelated-bg {
+    background-size: 20px 20px;
+    background-image: 
+      linear-gradient(to right, rgba(155, 173, 183, 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(155, 173, 183, 0.1) 1px, transparent 1px);
+  }
+  
+  .retro-gradient {
+    background: linear-gradient(135deg, #0078D7 0%, #8A4FFF 100%);
+  }
+  
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  
+  .blink {
+    animation: blink 1s steps(1) infinite;
+  }
+  
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+  
+  .float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes pixel-move {
+    0% { background-position: 0 0; }
+    100% { background-position: 30px 30px; }
+  }
+  
+  .pixel-progress {
+    background-image: linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+    );
+    background-size: 10px 10px;
+    animation: pixel-move 1s linear infinite;
+  }
+  
+  @keyframes level-up {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); }
+  }
+  
+  .level-up {
+    animation: level-up 0.5s ease-in-out;
+  }
+}
+
+@layer utilities {
+  .font-retro {
+    font-family: 'Press Start 2P', system-ui, sans-serif;
+    letter-spacing: -0.05em;
+    line-height: 1.5;
+  }
+  
+  .text-shadow-pixel {
+    text-shadow: 2px 2px 0px #131613;
   }
 }
