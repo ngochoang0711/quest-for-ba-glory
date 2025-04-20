@@ -2,240 +2,114 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Press Start 2P';
-  src: url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-  font-display: swap;
+body {
+  @apply bg-gray-100;
 }
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
+/* Apply to the main container for the pixelated look */
+.pixelated-bg {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAAAAAAJF6nAAAAEElEQVQI12P4//8/w+n4H4hgZQDiuQMCBiemoAAAAABJRU5ErkJggg==");
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20zm20-20h20v20H20V0z' fill='%23f9f9f9' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
-  }
+/* General styles for the pixel look */
+.pixel-container {
+  box-shadow: 4px 4px 0px 0px #131613;
+  border: 4px solid #131613;
 }
 
-@layer components {
-  .pixel-art {
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
+/* Retro font */
+.font-retro {
+  font-family: 'Press Start 2P', cursive;
+}
+
+/* Game title style */
+.game-title {
+  @apply font-retro text-4xl text-center text-game-blue-dark;
+  text-shadow: 2px 2px 0px #131613;
+}
+
+/* Level badge style */
+.level-badge {
+  @apply bg-game-blue-light text-white text-xs font-retro px-2 py-1 rounded border-2 border-game-pixel-black;
+}
+
+/* Pixel button styles */
+.pixel-button {
+  @apply font-retro text-white py-2 px-4 rounded border-2 border-game-pixel-black shadow-[4px_4px_0px_0px_#131613] transition-all;
+}
+
+.pixel-button:hover {
+  @apply shadow-[2px_2px_0px_0px_#131613] translate-x-[2px] translate-y-[2px];
+}
+
+.pixel-button:active {
+  @apply shadow-none translate-x-[4px] translate-y-[4px];
+}
+
+/* Pixel progress bar */
+.pixel-progress {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w+n4H4hgZQDiuQMCBiemoAAAAABJRU5ErkJggg==");
+  image-rendering: pixelated;
+  background-repeat: repeat-x;
+}
+
+/* Loading screen styles */
+.loading-screen {
+  @apply flex flex-col items-center justify-center h-screen bg-game-pixel-black text-white font-retro;
+}
+
+.loading-bar-container {
+  @apply w-64 h-4 bg-gray-800 rounded-full overflow-hidden relative;
+}
+
+.loading-bar {
+  @apply absolute top-0 left-0 h-full bg-game-green-light transition-all duration-700 ease-linear;
+}
+
+/* Dialog box styles */
+.dialog-box {
+  @apply p-4 border-4 shadow-[4px_4px_0px_0px_#131613];
+}
+
+/* Skill tree styles */
+.skill-tree {
+  @apply flex flex-col items-center;
+}
+
+.skill-node {
+  @apply w-32 h-32 flex items-center justify-center rounded-full border-4 border-game-pixel-black shadow-[4px_4px_0px_0px_#131613] font-retro text-white text-center;
+}
+
+/* Pixel location styling for map */
+.pixel-location {
+  @apply border-4 shadow-[4px_4px_0px_0px_#131613] relative z-10 transition-all;
+}
+
+.pixel-location:hover {
+  transform: translateY(-2px);
+  @apply shadow-[4px_4px_6px_0px_rgba(19,22,19,0.5)];
+}
+
+.pixel-location::before {
+  content: '';
+  @apply absolute -bottom-2 -right-2 w-full h-full bg-black opacity-10 z-[-1];
+}
+
+/* Float animation for map items */
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
   }
-  
-  .pixel-borders {
-    border-style: solid;
-    border-width: 4px;
-    border-color: #131613;
-    box-shadow: 0 0 0 4px #9BADB7;
-    position: relative;
+  50% {
+    transform: translateY(-5px);
   }
-  
-  .pixel-borders::after {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    pointer-events: none;
-  }
-  
-  .pixel-button {
-    @apply font-retro text-sm md:text-base px-5 py-2 border-4 border-game-pixel-black 
-           shadow-[4px_4px_0px_0px_#131613] hover:shadow-[2px_2px_0px_0px_#131613] 
-           active:shadow-[0px_0px_0px_0px_#131613] hover:translate-y-1 hover:translate-x-1
-           active:translate-y-2 active:translate-x-2 transition-all duration-100;
-  }
-  
-  .pixel-button-blue {
-    @apply pixel-button bg-game-blue-light hover:bg-game-blue-dark text-white;
-  }
-  
-  .pixel-button-green {
-    @apply pixel-button bg-game-green-light hover:bg-game-green-dark text-white;
-  }
-  
-  .pixel-button-purple {
-    @apply pixel-button bg-game-purple-light hover:bg-game-purple-dark text-white;
-  }
-  
-  .pixel-container {
-    @apply bg-white p-4 border-4 border-game-pixel-black shadow-[8px_8px_0px_0px_#131613];
-  }
-  
-  .dialog-box {
-    @apply pixel-container p-4 md:p-6 relative;
-  }
-  
-  .character-sprite {
-    @apply pixel-art w-16 h-16 md:w-24 md:h-24 object-contain;
-  }
-  
-  .game-title {
-    @apply font-retro text-3xl md:text-5xl text-game-blue-dark mb-4 drop-shadow-[4px_4px_0px_#131613];
-  }
-  
-  .level-badge {
-    @apply inline-block bg-game-purple-light text-white font-retro text-xs px-2 py-1 
-           border-2 border-game-pixel-black rounded;
-  }
-  
-  .pixelated-bg {
-    background-size: 20px 20px;
-    background-image: 
-      linear-gradient(to right, rgba(155, 173, 183, 0.1) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(155, 173, 183, 0.1) 1px, transparent 1px);
-  }
-  
-  .retro-gradient {
-    background: linear-gradient(135deg, #0078D7 0%, #8A4FFF 100%);
-  }
-  
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-  
-  .blink {
-    animation: blink 1s steps(1) infinite;
-  }
-  
-  @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0px); }
-  }
-  
-  .float {
-    animation: float 3s ease-in-out infinite;
-  }
-  
-  @keyframes pixel-move {
-    0% { background-position: 0 0; }
-    100% { background-position: 30px 30px; }
-  }
-  
-  .pixel-progress {
-    background-image: linear-gradient(
-      -45deg,
-      rgba(255, 255, 255, 0.2) 25%,
-      transparent 25%,
-      transparent 50%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.2) 75%,
-      transparent 75%,
-      transparent
-    );
-    background-size: 10px 10px;
-    animation: pixel-move 1s linear infinite;
-  }
-  
-  @keyframes level-up {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.5); }
-    100% { transform: scale(1); }
-  }
-  
-  .level-up {
-    animation: level-up 0.5s ease-in-out;
+  100% {
+    transform: translateY(0px);
   }
 }
 
-@layer utilities {
-  .font-retro {
-    font-family: 'Press Start 2P', system-ui, sans-serif;
-    letter-spacing: -0.05em;
-    line-height: 1.5;
-  }
-  
-  .text-shadow-pixel {
-    text-shadow: 2px 2px 0px #131613;
-  }
-}
+/* Additional styling for existing elements */
