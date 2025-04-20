@@ -6,6 +6,14 @@ export type BASkill = {
   name: string;
   level: number;
   maxLevel: number;
+  description?: string;
+  icon?: string;
+};
+
+export type SkillCategory = {
+  id: string;
+  name: string;
+  skills: string[]; // Skill IDs in this category
 };
 
 export type BACharacter = {
@@ -15,6 +23,7 @@ export type BACharacter = {
   level: number;
   experience: number;
   skills: BASkill[];
+  skillPoints: number; // Available skill points to allocate
 };
 
 export type ScenarioChoice = {
@@ -45,7 +54,7 @@ export type Scenario = {
   choices: ScenarioChoice[];
 };
 
-export type GameStage = "start" | "character" | "map" | "scenario" | "result";
+export type GameStage = "start" | "character" | "map" | "scenario" | "result" | "skilltree";
 
 export type GameState = {
   stage: GameStage;
@@ -61,4 +70,5 @@ export type GameState = {
       amount: number;
     }>;
   } | null;
+  skillCategories: SkillCategory[]; // New field for organizing skills
 };

@@ -6,6 +6,7 @@ import CharacterSelectionScreen from "./CharacterSelectionScreen";
 import MapScreen from "./MapScreen";
 import ScenarioScreen from "./ScenarioScreen";
 import ResultScreen from "./ResultScreen";
+import SkillTreeScreen from "./SkillTreeScreen";
 
 const Game = () => {
   const { state } = useGame();
@@ -19,6 +20,7 @@ const Game = () => {
           {state.stage === 'map' && <MapScreen />}
           {state.stage === 'scenario' && <ScenarioScreen />}
           {state.stage === 'result' && <ResultScreen />}
+          {state.stage === 'skilltree' && <SkillTreeScreen />}
         </div>
       </div>
     </div>

@@ -31,7 +31,14 @@ const MapScreen = () => {
         <div className="text-4xl mr-4">{character.sprite}</div>
         <div className="w-48">
           <div className="font-retro text-lg mb-1">{character.name}</div>
-          <div className="level-badge mb-2">Level {character.level}</div>
+          <div className="flex items-center space-x-2 mb-2">
+            <div className="level-badge">Level {character.level}</div>
+            {character.skillPoints > 0 && (
+              <div className="bg-game-green-light text-white text-xs font-retro px-2 py-1 rounded border-2 border-game-pixel-black animate-pulse">
+                {character.skillPoints} SP
+              </div>
+            )}
+          </div>
           <div className="text-xs font-retro mb-1">Experience:</div>
           <PixelProgressBar 
             value={character.experience % 100} 
@@ -39,6 +46,16 @@ const MapScreen = () => {
             color="purple" 
           />
         </div>
+      </div>
+
+      <div className="flex justify-center space-x-4 mb-8">
+        <PixelButton
+          color="green"
+          onClick={() => dispatch({ type: 'OPEN_SKILL_TREE' })}
+          className="text-sm"
+        >
+          Skill Tree {character.skillPoints > 0 ? `(${character.skillPoints})` : ''}
+        </PixelButton>
       </div>
 
       <DialogBox className="mb-8 max-w-lg">

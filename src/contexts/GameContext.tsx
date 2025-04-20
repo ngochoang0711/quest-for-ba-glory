@@ -1,14 +1,36 @@
 
 import React, { createContext, useContext, useReducer } from 'react';
-import { GameState, BACharacter, Scenario, ScenarioChoice } from '@/types/game';
+import { GameState, BACharacter, Scenario, ScenarioChoice, SkillCategory } from '@/types/game';
 
 // Default skills for all characters
 const DEFAULT_SKILLS = [
-  { id: 'requirements', name: 'Requirements Gathering', level: 1, maxLevel: 10 },
-  { id: 'analysis', name: 'Data Analysis', level: 1, maxLevel: 10 },
-  { id: 'communication', name: 'Stakeholder Communication', level: 1, maxLevel: 10 },
-  { id: 'documentation', name: 'Documentation', level: 1, maxLevel: 10 },
-  { id: 'technical', name: 'Technical Knowledge', level: 1, maxLevel: 10 },
+  { id: 'requirements', name: 'Requirements Gathering', level: 1, maxLevel: 10, description: 'Ability to elicit, document, and verify requirements from stakeholders' },
+  { id: 'analysis', name: 'Data Analysis', level: 1, maxLevel: 10, description: 'Skill in analyzing and interpreting complex data sets to derive insights' },
+  { id: 'communication', name: 'Stakeholder Communication', level: 1, maxLevel: 10, description: 'Effectiveness in conveying information clearly to different stakeholders' },
+  { id: 'documentation', name: 'Documentation', level: 1, maxLevel: 10, description: 'Proficiency in creating clear, comprehensive business and technical documents' },
+  { id: 'technical', name: 'Technical Knowledge', level: 1, maxLevel: 10, description: 'Understanding of technical concepts and systems relevant to the business domain' },
+  { id: 'process', name: 'Process Optimization', level: 0, maxLevel: 10, description: 'Ability to identify and implement improvements to business processes' },
+  { id: 'agile', name: 'Agile Methodologies', level: 0, maxLevel: 10, description: 'Knowledge and application of Agile frameworks and practices' },
+  { id: 'negotiation', name: 'Negotiation', level: 0, maxLevel: 10, description: 'Skill in facilitating agreements between conflicting stakeholder needs' },
+];
+
+// Skill categories
+const SKILL_CATEGORIES: SkillCategory[] = [
+  {
+    id: 'core',
+    name: 'Core BA Skills',
+    skills: ['requirements', 'analysis', 'documentation'],
+  },
+  {
+    id: 'interpersonal',
+    name: 'Interpersonal Skills',
+    skills: ['communication', 'negotiation'],
+  },
+  {
+    id: 'technical',
+    name: 'Technical Skills',
+    skills: ['technical', 'process', 'agile'],
+  },
 ];
 
 // Default characters
@@ -20,6 +42,7 @@ const DEFAULT_CHARACTERS: BACharacter[] = [
     level: 1,
     experience: 0,
     skills: DEFAULT_SKILLS,
+    skillPoints: 3,
   },
   {
     id: 'veteran',
@@ -28,6 +51,7 @@ const DEFAULT_CHARACTERS: BACharacter[] = [
     level: 1,
     experience: 0,
     skills: DEFAULT_SKILLS,
+    skillPoints: 5,
   },
 ];
 
@@ -38,6 +62,7 @@ const initialState: GameState = {
   currentScenario: null,
   completedScenarios: [],
   choiceResult: null,
+  skillCategories: SKILL_CATEGORIES,
 };
 
 // Actions
@@ -47,7 +72,10 @@ type GameAction =
   | { type: 'START_SCENARIO'; payload: Scenario }
   | { type: 'MAKE_CHOICE'; payload: ScenarioChoice }
   | { type: 'CONTINUE_TO_MAP' }
-  | { type: 'RESET_GAME' };
+  | { type: 'RESET_GAME' }
+  | { type: 'OPEN_SKILL_TREE' }
+  | { type: 'ALLOCATE_SKILL_POINT'; payload: { skillId: string } }
+  | { type: 'RETURN_TO_MAP' };
 
 // Reducer
 function gameReducer(state: GameState, action: GameAction): GameState {
@@ -106,6 +134,9 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const currentLevel = Math.floor(character.experience / 100) + 1;
       const newLevel = Math.floor(newExperience / 100) + 1;
       const leveledUp = newLevel > currentLevel;
+
+      // Award skill points if leveled up
+      const newSkillPoints = character.skillPoints + (leveledUp ? 2 : 0);
       
       return {
         ...state,
@@ -114,6 +145,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           level: newLevel,
           experience: newExperience,
           skills: updatedSkills,
+          skillPoints: newSkillPoints,
         },
         stage: 'result',
         completedScenarios: [...state.completedScenarios, state.currentScenario!.id],
@@ -132,6 +164,41 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       };
     case 'RESET_GAME':
       return initialState;
+
+    // New actions for skill tree
+    case 'OPEN_SKILL_TREE':
+      return {
+        ...state,
+        stage: 'skilltree',
+      };
+    case 'ALLOCATE_SKILL_POINT': {
+      const character = state.character!;
+      if (character.skillPoints <= 0) return state;
+
+      const updatedSkills = character.skills.map(skill => {
+        if (skill.id === action.payload.skillId && skill.level < skill.maxLevel) {
+          return {
+            ...skill,
+            level: skill.level + 1,
+          };
+        }
+        return skill;
+      });
+
+      return {
+        ...state,
+        character: {
+          ...character,
+          skills: updatedSkills,
+          skillPoints: character.skillPoints - 1,
+        },
+      };
+    }
+    case 'RETURN_TO_MAP':
+      return {
+        ...state,
+        stage: 'map',
+      };
     default:
       return state;
   }
