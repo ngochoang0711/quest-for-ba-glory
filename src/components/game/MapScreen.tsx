@@ -134,8 +134,7 @@ const MapScreen = () => {
                     <div className="flex justify-end">
                       <PixelButton
                         color={isCompleted ? "green" : "blue"}
-                        onClick={(e) => {
-                          e.stopPropagation();
+                        onClick={() => {
                           handleStartScenario(scenario.id);
                         }}
                         className="text-xs"
