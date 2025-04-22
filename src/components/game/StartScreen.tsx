@@ -12,14 +12,15 @@ const StartScreen = () => {
   const [showTutorial, setShowTutorial] = useState(false);
   const [isNewPlayer, setIsNewPlayer] = useState(!character);
   
-  // Career levels for roadmap display
+  // Career levels for roadmap display - this is the central definition of the career progression
   const careerLevels = [
-    { level: 0, title: "Rookie Analyst" },
-    { level: 1, title: "Junior Business Analyst" },
-    { level: 2, title: "Senior Business Analyst" },
-    { level: 3, title: "Lead/Consultant BA" },
+    { level: 0, title: "Rookie Analyst", description: "Beginning your BA journey" },
+    { level: 1, title: "Junior Business Analyst", description: "Learning the fundamentals" },
+    { level: 2, title: "Senior Business Analyst", description: "Leading complex projects" },
+    { level: 3, title: "Lead/Consultant BA", description: "Strategic business partner" },
   ];
 
+  // Export the career levels for use in other components
   // Get personalized welcome message based on character or default
   const getWelcomeMessage = () => {
     if (character) {
@@ -27,6 +28,14 @@ const StartScreen = () => {
       return `Welcome back, ${careerTitle}! Ready for your next quest?`;
     }
     return "Welcome to your BA Career Quest! Ready to begin your journey?";
+  };
+
+  // Calculate next level title
+  const getNextLevelTitle = () => {
+    if (!character) return "";
+    const nextLevel = character.level + 1;
+    const nextCareerInfo = careerLevels.find(c => c.level === nextLevel);
+    return nextCareerInfo ? nextCareerInfo.title : "Career Mastery";
   };
 
   const handleStartQuest = () => {
@@ -59,7 +68,27 @@ const StartScreen = () => {
         <div className="text-4xl">🏆</div>
       </div>
       
-      <p className="font-retro text-sm max-w-md mx-auto mt-8 text-game-pixel-black">
+      <h2 className="font-retro text-xl text-game-blue-dark mb-4">Your Career Journey</h2>
+      
+      <div className="pixel-container p-4 mb-6 max-w-md mx-auto">
+        <div className="space-y-2">
+          {careerLevels.map((level, index) => (
+            <div key={index} className="flex items-center">
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs 
+                ${index === 0 ? 'bg-game-blue-dark text-white' : 'bg-gray-200 text-gray-500'}`}>
+                {level.level}
+              </div>
+              <div className="ml-3">
+                <div className="font-retro text-sm">{level.title}</div>
+                <div className="text-xs text-gray-600">{level.description}</div>
+              </div>
+            </div>
+          ))}
+          <div className="w-[2px] h-4 bg-gray-200 ml-3"></div>
+        </div>
+      </div>
+      
+      <p className="font-retro text-sm max-w-md mx-auto mt-2 text-game-pixel-black">
         Embark on an epic journey through the world of Business Analysis, 
         from junior analyst to strategic leader!
       </p>
@@ -96,6 +125,9 @@ const StartScreen = () => {
               maxValue={100} 
               color="purple" 
             />
+            <div className="text-xs text-right mt-1 font-retro text-gray-600">
+              {character && character.experience % 100}/100 XP to next level
+            </div>
           </div>
         </div>
         
@@ -109,36 +141,40 @@ const StartScreen = () => {
         )}
         
         {/* Career Roadmap Display */}
-        <div className="mt-4">
-          <h3 className="font-retro text-xs mb-2">Career Roadmap:</h3>
-          <div className="flex w-full h-4 rounded overflow-hidden bg-gray-200 border border-game-pixel-black">
+        <div className="mt-6">
+          <h3 className="font-retro text-sm mb-3">Career Roadmap:</h3>
+          <div className="space-y-3">
             {careerLevels.map((careerLevel, index) => (
-              <div 
-                key={index}
-                className={`flex-1 h-full ${
-                  careerLevel.level < character?.level 
-                    ? 'bg-game-green-dark' 
+              <div key={index} className="flex items-center">
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs 
+                  ${careerLevel.level < character?.level 
+                    ? 'bg-game-green-dark text-white' 
                     : careerLevel.level === character?.level 
-                      ? 'bg-game-purple-dark' 
-                      : 'bg-gray-300'
-                }`}
-                title={careerLevel.title}
-              />
-            ))}
-          </div>
-          <div className="flex justify-between mt-1 text-[8px] font-retro">
-            {careerLevels.map((careerLevel, index) => (
-              <div 
-                key={index}
-                className={
-                  careerLevel.level <= character?.level 
-                    ? 'text-game-green-dark' 
-                    : 'text-gray-500'
-                }
-              >
-                L{careerLevel.level}
+                      ? 'bg-game-purple-dark text-white' 
+                      : 'bg-gray-200 text-gray-500'}`}>
+                  {careerLevel.level}
+                </div>
+                <div className="ml-3 flex-1">
+                  <div className={`font-retro text-sm 
+                    ${careerLevel.level <= character?.level
+                      ? 'text-game-pixel-black' 
+                      : 'text-gray-500'}`}>
+                    {careerLevel.title}
+                  </div>
+                  <div className={`text-xs ${careerLevel.level <= character?.level
+                      ? 'text-gray-600' 
+                      : 'text-gray-400'}`}>
+                    {careerLevel.description}
+                  </div>
+                </div>
+                {careerLevel.level < character?.level && (
+                  <div className="text-game-green-dark">✓</div>
+                )}
               </div>
             ))}
+          </div>
+          <div className="text-xs font-retro mt-3 text-game-purple-dark">
+            Next Promotion: {getNextLevelTitle()}
           </div>
         </div>
       </div>
@@ -187,7 +223,7 @@ const StartScreen = () => {
   const renderTutorial = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="pixel-container bg-white p-6 max-w-lg">
-        <h2 className="font-retro text-lg mb-4">How to Play</h2>
+        <h2 className="font-retro text-lg mb-4">Your BA Career Journey</h2>
         
         <div className="space-y-4 mb-6">
           <div className="flex">
@@ -220,6 +256,23 @@ const StartScreen = () => {
               <h3 className="font-retro text-sm text-game-blue-dark">Advance Your Career</h3>
               <p className="text-sm">Level up from Rookie to Lead Business Analyst</p>
             </div>
+          </div>
+        </div>
+        
+        <div className="pixel-container p-3 bg-gray-50 mb-4">
+          <h3 className="font-retro text-sm text-game-blue-dark mb-2">Career Roadmap:</h3>
+          <div className="space-y-2">
+            {careerLevels.map((level, index) => (
+              <div key={index} className="flex items-center">
+                <div className={`w-5 h-5 rounded-full flex items-center justify-center text-xs bg-gray-200 text-gray-500`}>
+                  {level.level}
+                </div>
+                <div className="ml-2">
+                  <div className="font-retro text-xs">{level.title}</div>
+                  <div className="text-[10px] text-gray-600">{level.description}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
         

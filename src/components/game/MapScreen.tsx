@@ -4,13 +4,30 @@ import { useGame } from "@/contexts/GameContext";
 import PixelButton from "./PixelButton";
 import DialogBox from "./DialogBox";
 import PixelProgressBar from "./PixelProgressBar";
-import { Check, Trophy, MapPin, Lock, Users, MessageSquare, Handshake, Layers, ChartBar } from "lucide-react";
+import { Check, Trophy, MapPin, Lock, Users, MessageSquare, Handshake, Layers, ChartBar, Star } from "lucide-react";
 
 const MapScreen = () => {
   const { state, scenarios, dispatch } = useGame();
   const { character, completedScenarios } = state;
 
   if (!character) return null;
+
+  // Career levels for roadmap display - matches the ones in StartScreen
+  const careerLevels = [
+    { level: 0, title: "Rookie Analyst", description: "Beginning your BA journey" },
+    { level: 1, title: "Junior Business Analyst", description: "Learning the fundamentals" },
+    { level: 2, title: "Senior Business Analyst", description: "Leading complex projects" },
+    { level: 3, title: "Lead/Consultant BA", description: "Strategic business partner" },
+  ];
+
+  // Get current career level info
+  const currentCareerInfo = careerLevels.find(c => c.level === character.level) || careerLevels[0];
+  
+  // Get next career level info
+  const nextCareerInfo = careerLevels.find(c => c.level === character.level + 1);
+
+  // Calculate XP needed for next level
+  const xpForNextLevel = 100 - (character.experience % 100);
 
   // Filter scenarios by character level (only show scenarios that match character level or lower)
   const availableScenarios = scenarios.filter(
@@ -71,26 +88,34 @@ const MapScreen = () => {
     <div className="flex flex-col items-center">
       <h1 className="game-title mb-6">Career Map</h1>
 
-      <div className="flex items-center justify-center mb-6">
-        <div className="text-4xl mr-4">{character.sprite}</div>
-        <div className="w-48">
-          <div className="font-retro text-lg mb-1">{character.name}</div>
-          <div className="flex items-center space-x-2 mb-2">
-            <div className={`${character.level >= 2 ? 'level-badge-purple' : 'level-badge'}`}>
-              Level {character.level}
-            </div>
-            {character.skillPoints > 0 && (
-              <div className="bg-game-green-light text-white text-xs font-retro px-2 py-1 rounded border-2 border-game-pixel-black animate-pulse">
-                {character.skillPoints} SP
+      <div className="flex items-center justify-between w-full max-w-lg mb-6">
+        <div className="flex items-center">
+          <div className="text-4xl mr-4">{character.sprite}</div>
+          <div className="w-48">
+            <div className="font-retro text-lg mb-1">{character.name}</div>
+            <div className="flex items-center space-x-2 mb-2">
+              <div className={`${character.level >= 2 ? 'level-badge-purple' : 'level-badge'}`}>
+                {currentCareerInfo.title}
               </div>
-            )}
+              {character.skillPoints > 0 && (
+                <div className="bg-game-green-light text-white text-xs font-retro px-2 py-1 rounded border-2 border-game-pixel-black animate-pulse">
+                  {character.skillPoints} SP
+                </div>
+              )}
+            </div>
+            <div className="text-xs font-retro mb-1">Experience:</div>
+            <PixelProgressBar 
+              value={character.experience % 100} 
+              maxValue={100} 
+              color={character.level >= 2 ? "purple" : "blue"} 
+            />
+            <div className="flex justify-between mt-1">
+              <div className="text-xs font-retro text-gray-600">Level {character.level}</div>
+              {nextCareerInfo && (
+                <div className="text-xs font-retro text-gray-600">{xpForNextLevel} XP to {nextCareerInfo.title}</div>
+              )}
+            </div>
           </div>
-          <div className="text-xs font-retro mb-1">Experience:</div>
-          <PixelProgressBar 
-            value={character.experience % 100} 
-            maxValue={100} 
-            color={character.level >= 2 ? "purple" : "blue"} 
-          />
         </div>
       </div>
 
@@ -98,9 +123,10 @@ const MapScreen = () => {
         <PixelButton
           color="green"
           onClick={() => dispatch({ type: 'OPEN_SKILL_TREE' })}
-          className="text-sm"
+          className="text-sm flex items-center"
         >
-          Skill Tree {character.skillPoints > 0 ? `(${character.skillPoints})` : ''}
+          <Star className="mr-2 w-4 h-4" />
+          <span>Skill Tree {character.skillPoints > 0 ? `(${character.skillPoints})` : ''}</span>
         </PixelButton>
       </div>
 
@@ -125,6 +151,32 @@ const MapScreen = () => {
           <div className="relative mb-6 text-center">
             <h2 className="font-retro text-lg text-game-blue-dark">BA Corporate World</h2>
             <p className="text-xs font-retro text-gray-600">Select a location to start a challenge</p>
+          </div>
+          
+          {/* Career Path Indicator */}
+          <div className="relative mb-6 z-10">
+            <div className="pixel-container p-3 bg-white bg-opacity-90 max-w-md mx-auto">
+              <h3 className="font-retro text-sm mb-2 text-center">Your Career Path:</h3>
+              <div className="flex justify-between relative">
+                {careerLevels.map((level, index) => (
+                  <div key={index} className="flex flex-col items-center relative z-10 w-1/4">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold mb-1
+                      ${level.level < character.level 
+                        ? 'bg-game-green-dark text-white' 
+                        : level.level === character.level 
+                          ? 'bg-game-purple-dark text-white' 
+                          : 'bg-gray-200 text-gray-500'}`}>
+                      {level.level}
+                    </div>
+                    <div className="text-[10px] font-retro text-center">
+                      {level.title}
+                    </div>
+                  </div>
+                ))}
+                {/* Connecting line */}
+                <div className="absolute top-4 left-0 w-full h-[2px] bg-gray-300 -z-10"></div>
+              </div>
+            </div>
           </div>
           
           {/* Map with locations */}
