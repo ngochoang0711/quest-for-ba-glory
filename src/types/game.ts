@@ -1,4 +1,3 @@
-
 // Game types
 
 export type BASkill = {
@@ -54,7 +53,7 @@ export type Scenario = {
   choices: ScenarioChoice[];
 };
 
-export type GameStage = "start" | "character" | "map" | "scenario" | "result" | "skilltree";
+export type GameStage = "start" | "character" | "map" | "scenario" | "result" | "skilltree" | "journal";
 
 export type GameState = {
   stage: GameStage;
