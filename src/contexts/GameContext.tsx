@@ -305,6 +305,182 @@ const SCENARIOS: Scenario[] = [
       },
     ],
   },
+  // New Level 2 Scenarios
+  {
+    id: 'conflicting-stakeholders',
+    title: 'Conflicting Stakeholder Demands',
+    description: 'Sales wants more features, Engineering wants to fix technical debt, and Finance wants to cut costs. As a Senior BA, how do you facilitate alignment?',
+    level: 2,
+    npcName: 'Department Heads',
+    npcSprite: '👥',
+    choices: [
+      {
+        id: 'joint-workshop',
+        text: 'Organize a joint prioritization workshop with all stakeholders',
+        skillRequirements: [
+          { skillId: 'communication', minLevel: 4 },
+          { skillId: 'negotiation', minLevel: 3 }
+        ],
+        outcomes: {
+          experience: 60,
+          skillIncrease: [
+            { skillId: 'negotiation', amount: 2 },
+            { skillId: 'communication', amount: 2 },
+          ],
+          resultText: 'Your workshop created a platform for departments to understand each other\'s constraints. By facilitating constructive dialogue, you helped them reach a compromise that balanced new features with technical improvements.',
+        },
+      },
+      {
+        id: 'cost-benefit',
+        text: 'Conduct a detailed cost-benefit analysis of all proposed work',
+        skillRequirements: [
+          { skillId: 'analysis', minLevel: 5 },
+          { skillId: 'documentation', minLevel: 4 }
+        ],
+        outcomes: {
+          experience: 55,
+          skillIncrease: [
+            { skillId: 'analysis', amount: 2 },
+            { skillId: 'documentation', amount: 1 },
+            { skillId: 'technical', amount: 1 },
+          ],
+          resultText: 'Your thorough analysis quantified the business value of features versus technical improvements. The data-driven approach convinced Finance to allocate resources more strategically, satisfying both Sales and Engineering.',
+        },
+      },
+      {
+        id: 'escalate',
+        text: 'Escalate to executive leadership to make the final decision',
+        skillRequirements: [
+          { skillId: 'documentation', minLevel: 3 }
+        ],
+        outcomes: {
+          experience: 35,
+          skillIncrease: [
+            { skillId: 'documentation', amount: 1 },
+          ],
+          resultText: 'Leadership appreciated your clear summary of the situation but was disappointed you didn\'t attempt to resolve the conflict first. Next time, try facilitating a collaborative solution before escalating.',
+        },
+      },
+    ],
+  },
+  {
+    id: 'agile-backlog',
+    title: 'Agile Backlog Prioritization',
+    description: 'Your team has accumulated a massive product backlog with conflicting priorities. The Product Owner is overwhelmed and the sprint planning session is tomorrow.',
+    level: 2,
+    npcName: 'Product Owner',
+    npcSprite: '🧑‍💻',
+    choices: [
+      {
+        id: 'value-mapping',
+        text: 'Facilitate a value-mapping session to identify highest-impact items',
+        skillRequirements: [
+          { skillId: 'agile', minLevel: 4 },
+          { skillId: 'analysis', minLevel: 3 }
+        ],
+        outcomes: {
+          experience: 55,
+          skillIncrease: [
+            { skillId: 'agile', amount: 2 },
+            { skillId: 'requirements', amount: 1 },
+            { skillId: 'analysis', amount: 1 },
+          ],
+          resultText: 'The value-mapping exercise helped the team visualize business value versus effort. This clarity enabled the Product Owner to confidently prioritize the backlog, resulting in a focused sprint planning session.',
+        },
+      },
+      {
+        id: 'refine-epics',
+        text: 'Work with the Product Owner to consolidate stories into strategic epics',
+        skillRequirements: [
+          { skillId: 'requirements', minLevel: 5 },
+          { skillId: 'communication', minLevel: 3 }
+        ],
+        outcomes: {
+          experience: 50,
+          skillIncrease: [
+            { skillId: 'requirements', amount: 2 },
+            { skillId: 'agile', amount: 2 },
+          ],
+          resultText: 'By organizing the backlog into coherent epics, you created strategic themes that made prioritization more manageable. The Product Owner appreciated having a structured backlog that aligned with business objectives.',
+        },
+      },
+      {
+        id: 'technical-first',
+        text: 'Recommend prioritizing technical debt to improve velocity later',
+        skillRequirements: [
+          { skillId: 'technical', minLevel: 4 }
+        ],
+        outcomes: {
+          experience: 40,
+          skillIncrease: [
+            { skillId: 'technical', amount: 2 },
+            { skillId: 'process', amount: 1 },
+          ],
+          resultText: 'While your technical assessment was sound, prioritizing technical debt without clear business value justification created tension with stakeholders. Consider balancing technical concerns with visible business outcomes in the future.',
+        },
+      },
+    ],
+  },
+  {
+    id: 'vendor-integration',
+    title: 'Vendor Integration Kickoff',
+    description: 'Your company is integrating a new vendor\'s software system. You need to lead the kickoff meeting and establish the integration approach.',
+    level: 2,
+    npcName: 'Vendor Representative',
+    npcSprite: '👨‍💻',
+    choices: [
+      {
+        id: 'joint-planning',
+        text: 'Establish a joint planning team with vendor and internal experts',
+        skillRequirements: [
+          { skillId: 'communication', minLevel: 4 },
+          { skillId: 'technical', minLevel: 3 }
+        ],
+        outcomes: {
+          experience: 60,
+          skillIncrease: [
+            { skillId: 'communication', amount: 2 },
+            { skillId: 'technical', amount: 2 },
+            { skillId: 'process', amount: 1 },
+          ],
+          resultText: 'The collaborative approach fostered strong relationships between teams. By bringing together diverse expertise, you identified integration challenges early and developed a comprehensive plan that both parties fully supported.',
+        },
+      },
+      {
+        id: 'detailed-requirements',
+        text: 'Document detailed integration requirements and hand off to the vendor',
+        skillRequirements: [
+          { skillId: 'documentation', minLevel: 5 },
+          { skillId: 'requirements', minLevel: 4 }
+        ],
+        outcomes: {
+          experience: 50,
+          skillIncrease: [
+            { skillId: 'documentation', amount: 2 },
+            { skillId: 'requirements', amount: 2 },
+          ],
+          resultText: 'Your thorough requirements document provided clear direction, but the hands-off approach missed opportunities for collaboration. The vendor delivered according to specifications, but several assumptions had to be corrected during implementation.',
+        },
+      },
+      {
+        id: 'agile-iterations',
+        text: 'Propose an iterative approach with bi-weekly demos and feedback',
+        skillRequirements: [
+          { skillId: 'agile', minLevel: 4 },
+          { skillId: 'communication', minLevel: 3 }
+        ],
+        outcomes: {
+          experience: 55,
+          skillIncrease: [
+            { skillId: 'agile', amount: 2 },
+            { skillId: 'communication', amount: 1 },
+            { skillId: 'process', amount: 1 },
+          ],
+          resultText: 'The iterative approach was initially met with resistance from the vendor but proved highly effective. Regular demonstrations caught misalignments early, and the integration progressed smoothly with minimal rework.',
+        },
+      },
+    ],
+  },
 ];
 
 export function GameProvider({ children }: { children: React.ReactNode }) {

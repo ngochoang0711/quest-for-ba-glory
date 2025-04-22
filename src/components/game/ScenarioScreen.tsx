@@ -3,6 +3,7 @@ import React from "react";
 import { useGame } from "@/contexts/GameContext";
 import PixelButton from "./PixelButton";
 import DialogBox from "./DialogBox";
+import { Handshake, Users, MessageSquare, ChartBar, Layers } from "lucide-react";
 
 const ScenarioScreen = () => {
   const { state, dispatch } = useGame();
@@ -27,9 +28,34 @@ const ScenarioScreen = () => {
     });
   };
 
+  // Get an icon based on the scenario level or type
+  const getScenarioIcon = () => {
+    const level = currentScenario.level;
+    
+    if (level === 1) {
+      return <MessageSquare className="h-6 w-6 text-game-blue-dark" />;
+    } else if (level === 2) {
+      // Different icons for different Level 2 scenario types
+      if (currentScenario.id.includes('stakeholder')) {
+        return <Users className="h-6 w-6 text-game-purple-dark" />;
+      } else if (currentScenario.id.includes('agile')) {
+        return <Layers className="h-6 w-6 text-game-purple-dark" />;
+      } else if (currentScenario.id.includes('vendor')) {
+        return <Handshake className="h-6 w-6 text-game-purple-dark" />;
+      } else {
+        return <ChartBar className="h-6 w-6 text-game-purple-dark" />;
+      }
+    }
+    
+    return null;
+  };
+
   return (
     <div className="flex flex-col items-center">
-      <h1 className="game-title mb-4">{currentScenario.title}</h1>
+      <div className="flex items-center justify-center mb-4">
+        <h1 className="game-title">{currentScenario.title}</h1>
+        <div className="ml-3">{getScenarioIcon()}</div>
+      </div>
       
       <div className="flex items-center justify-center mb-6">
         <div className="text-4xl mr-4">{character.sprite}</div>
@@ -53,6 +79,15 @@ const ScenarioScreen = () => {
             <p className="font-retro text-sm text-game-pixel-black">
               {currentScenario.description}
             </p>
+            
+            {/* Add difficulty indicator for Level 2+ scenarios */}
+            {currentScenario.level >= 2 && (
+              <div className="mt-3 px-2 py-1 bg-game-purple-dark bg-opacity-10 border border-game-purple-dark rounded-sm">
+                <p className="text-xs font-retro text-game-purple-dark">
+                  Senior BA Challenge • Requires advanced skills
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </DialogBox>
@@ -62,7 +97,9 @@ const ScenarioScreen = () => {
           const canChoose = canMakeChoice(choice);
           
           return (
-            <div key={choice.id} className="pixel-container">
+            <div key={choice.id} className={`pixel-container ${
+              currentScenario.level >= 2 ? 'border-l-4 border-l-game-purple-dark' : ''
+            }`}>
               <p className="font-retro text-sm mb-4">{choice.text}</p>
               
               {choice.skillRequirements && choice.skillRequirements.length > 0 && (
@@ -89,9 +126,10 @@ const ScenarioScreen = () => {
               
               <div className="flex justify-end">
                 <PixelButton
-                  color="blue"
+                  color={currentScenario.level >= 2 ? "purple" : "blue"}
                   onClick={() => handleMakeChoice(choice.id)}
-                  className={`text-xs ${!canChoose ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  disabled={!canChoose}
+                  className="text-xs"
                 >
                   Choose
                 </PixelButton>

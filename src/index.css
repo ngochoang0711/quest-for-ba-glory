@@ -38,10 +38,19 @@
     @apply border-2 border-game-pixel-black;
   }
   
+  .level-badge-purple {
+    @apply inline-block font-retro text-xs bg-game-purple-dark text-white px-2 py-1 rounded;
+    @apply border-2 border-game-pixel-black;
+  }
+  
   .pixel-container {
     @apply border-4 border-game-pixel-black rounded p-4 relative;
     @apply shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)];
     @apply bg-white;
+  }
+  
+  .pixel-container-level2 {
+    @apply pixel-container border-l-8 border-l-game-purple-dark;
   }
   
   .float {

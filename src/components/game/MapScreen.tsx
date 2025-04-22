@@ -4,7 +4,7 @@ import { useGame } from "@/contexts/GameContext";
 import PixelButton from "./PixelButton";
 import DialogBox from "./DialogBox";
 import PixelProgressBar from "./PixelProgressBar";
-import { Check, Trophy, MapPin, Lock } from "lucide-react";
+import { Check, Trophy, MapPin, Lock, Users, MessageSquare, Handshake, Layers, ChartBar } from "lucide-react";
 
 const MapScreen = () => {
   const { state, scenarios, dispatch } = useGame();
@@ -12,7 +12,7 @@ const MapScreen = () => {
 
   if (!character) return null;
 
-  // Filter scenarios by character level (only show scenarios that match character level)
+  // Filter scenarios by character level (only show scenarios that match character level or lower)
   const availableScenarios = scenarios.filter(
     scenario => scenario.level <= character.level
   );
@@ -24,24 +24,47 @@ const MapScreen = () => {
     }
   };
 
-  // Function to get a scenario's visual element based on its ID
-  const getScenarioVisual = (id: string) => {
-    switch (id) {
-      case 'junior-requirements':
-        return '🏢'; // Cubicle/Office Building for "Missing Requirements"
-      case 'data-analysis':
-        return '🖥️'; // Server/Computer for "Data Dilemma"
-      default:
-        return '📝'; // Default icon
+  // Function to get a scenario's visual element based on its ID and level
+  const getScenarioVisual = (scenario: typeof scenarios[0]) => {
+    const { id, level } = scenario;
+    
+    // Level 2 scenarios
+    if (level === 2) {
+      if (id.includes('stakeholder')) {
+        return <Users size={24} className="text-game-purple-dark" />;
+      } else if (id.includes('agile')) {
+        return <Layers size={24} className="text-game-purple-dark" />;
+      } else if (id.includes('vendor')) {
+        return <Handshake size={24} className="text-game-purple-dark" />;
+      } else {
+        return <ChartBar size={24} className="text-game-purple-dark" />;
+      }
+    }
+    
+    // Level 1 scenarios
+    if (id === 'junior-requirements') {
+      return '🏢';
+    } else if (id === 'data-analysis') {
+      return '🖥️';
+    } else {
+      return <MessageSquare size={24} className="text-game-blue-dark" />;
     }
   };
 
-  // Function to get background color class based on completion status
-  const getLocationClass = (scenarioId: string) => {
-    const isCompleted = completedScenarios.includes(scenarioId);
-    return isCompleted 
-      ? "bg-opacity-20 bg-game-green-light border-game-green-dark" 
-      : "bg-opacity-10 bg-game-blue-light border-game-blue-dark";
+  // Function to get background color class based on completion status and level
+  const getLocationClass = (scenario: typeof scenarios[0]) => {
+    const isCompleted = completedScenarios.includes(scenario.id);
+    const isLevel2 = scenario.level === 2;
+    
+    if (isCompleted) {
+      return isLevel2 
+        ? "bg-opacity-20 bg-game-purple-light border-game-purple-dark" 
+        : "bg-opacity-20 bg-game-green-light border-game-green-dark";
+    } else {
+      return isLevel2 
+        ? "bg-opacity-10 bg-game-purple-light border-game-purple-dark" 
+        : "bg-opacity-10 bg-game-blue-light border-game-blue-dark";
+    }
   };
 
   return (
@@ -53,7 +76,9 @@ const MapScreen = () => {
         <div className="w-48">
           <div className="font-retro text-lg mb-1">{character.name}</div>
           <div className="flex items-center space-x-2 mb-2">
-            <div className="level-badge">Level {character.level}</div>
+            <div className={`${character.level >= 2 ? 'level-badge-purple' : 'level-badge'}`}>
+              Level {character.level}
+            </div>
             {character.skillPoints > 0 && (
               <div className="bg-game-green-light text-white text-xs font-retro px-2 py-1 rounded border-2 border-game-pixel-black animate-pulse">
                 {character.skillPoints} SP
@@ -64,7 +89,7 @@ const MapScreen = () => {
           <PixelProgressBar 
             value={character.experience % 100} 
             maxValue={100} 
-            color="purple" 
+            color={character.level >= 2 ? "purple" : "blue"} 
           />
         </div>
       </div>
@@ -81,7 +106,9 @@ const MapScreen = () => {
 
       <DialogBox className="mb-8 max-w-lg">
         <p className="font-retro text-sm text-game-pixel-black">
-          Explore the career map and choose your next challenge:
+          {character.level >= 2 
+            ? "Senior BA challenges require advanced skills. Choose wisely to demonstrate your leadership abilities:"
+            : "Explore the career map and choose your next challenge:"}
         </p>
       </DialogBox>
 
@@ -104,16 +131,17 @@ const MapScreen = () => {
           <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 z-10">
             {availableScenarios.map(scenario => {
               const isCompleted = completedScenarios.includes(scenario.id);
+              const isLevel2 = scenario.level === 2;
               
               return (
                 <div 
                   key={scenario.id} 
-                  className={`pixel-location ${getLocationClass(scenario.id)} p-4 cursor-pointer transition-all hover:translate-y-[-2px] relative`}
+                  className={`pixel-location ${getLocationClass(scenario)} p-4 cursor-pointer transition-all hover:translate-y-[-2px] relative`}
                   onClick={() => handleStartScenario(scenario.id)}
                 >
                   {/* Location Icon */}
                   <div className="absolute -top-5 -left-5 text-4xl z-20 float">
-                    {getScenarioVisual(scenario.id)}
+                    {getScenarioVisual(scenario)}
                   </div>
                   
                   {/* Completion Status */}
@@ -126,14 +154,16 @@ const MapScreen = () => {
                   <div className="ml-8">
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-retro text-sm">{scenario.title}</h3>
-                      <span className="level-badge text-xs">Level {scenario.level}</span>
+                      <span className={`${isLevel2 ? 'level-badge-purple' : 'level-badge'} text-xs`}>
+                        Level {scenario.level}
+                      </span>
                     </div>
                     
                     <p className="text-xs mb-4">{scenario.description}</p>
                     
                     <div className="flex justify-end">
                       <PixelButton
-                        color={isCompleted ? "green" : "blue"}
+                        color={isLevel2 ? "purple" : isCompleted ? "green" : "blue"}
                         onClick={() => {
                           handleStartScenario(scenario.id);
                         }}
@@ -148,7 +178,7 @@ const MapScreen = () => {
             })}
             
             {/* Locked/Future Locations */}
-            {character.level === 1 && (
+            {character.level <= 2 && (
               <div className="pixel-location bg-opacity-10 bg-gray-200 border-gray-400 p-4 relative opacity-70">
                 <div className="absolute -top-5 -left-5 text-4xl z-20 blur-[1px]">
                   🏆
@@ -160,8 +190,8 @@ const MapScreen = () => {
                 
                 <div className="ml-8">
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-retro text-sm">Stakeholder Summit</h3>
-                    <span className="level-badge text-xs bg-gray-400">Level 2</span>
+                    <h3 className="font-retro text-sm">Strategic Initiative</h3>
+                    <span className="level-badge text-xs bg-gray-400">Level 3</span>
                   </div>
                   
                   <p className="text-xs mb-4 blur-[1px]">Under construction... Level up to unlock!</p>
@@ -182,19 +212,19 @@ const MapScreen = () => {
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="flex items-center">
                 <div className="w-3 h-3 bg-game-green-light mr-2"></div>
-                <span>Completed</span>
+                <span>Completed Level 1</span>
               </div>
               <div className="flex items-center">
                 <div className="w-3 h-3 bg-game-blue-light mr-2"></div>
-                <span>Available</span>
+                <span>Available Level 1</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-3 h-3 bg-game-purple-light mr-2"></div>
+                <span>Level 2 (Senior BA)</span>
               </div>
               <div className="flex items-center">
                 <div className="w-3 h-3 bg-gray-300 mr-2"></div>
                 <span>Locked</span>
-              </div>
-              <div className="flex items-center">
-                <MapPin size={12} className="mr-2" />
-                <span>You are here</span>
               </div>
             </div>
           </div>
