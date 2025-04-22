@@ -26,4 +26,31 @@
   .pixel-button-purple {
     @apply bg-game-purple-dark hover:bg-game-purple-dark/90;
   }
+  
+  /* New classes for the enhanced UI */
+  .game-title {
+    @apply font-retro text-3xl md:text-4xl text-game-pixel-black;
+    @apply drop-shadow-[4px_4px_0px_rgba(0,0,0,0.2)];
+  }
+  
+  .level-badge {
+    @apply inline-block font-retro text-xs bg-game-blue-dark text-white px-2 py-1 rounded;
+    @apply border-2 border-game-pixel-black;
+  }
+  
+  .pixel-container {
+    @apply border-4 border-game-pixel-black rounded p-4 relative;
+    @apply shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)];
+    @apply bg-white;
+  }
+  
+  .float {
+    animation: float 2s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
 }
