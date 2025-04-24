@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -103,7 +104,10 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out'
 			},
       fontFamily: {
-        'retro': ['Press Start 2P', 'cursive']
+        'retro': ['Press Start 2P', 'cursive'],
+        'pixel': ['Press Start 2P', 'cursive'],
+        'pixel-sans': ['VT323', 'monospace'], 
+        'pixel-mono': ['Silkscreen', 'monospace']
       }
 		}
 	},

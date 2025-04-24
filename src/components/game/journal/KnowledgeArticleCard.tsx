@@ -45,34 +45,34 @@ const KnowledgeArticleCard = ({ article, onClick }: KnowledgeArticleCardProps) =
   
   return (
     <div 
-      className="pixel-container p-4 hover:translate-y-[-2px] transition-transform cursor-pointer"
+      className="pixel-container p-4 hover:translate-y-[-2px] transition-transform cursor-pointer font-pixel"
       onClick={onClick}
     >
       <div className="flex items-start justify-between mb-2">
-        <h3 className="font-retro text-base text-game-blue-dark">{article.title}</h3>
+        <h3 className="font-pixel text-base text-game-blue-dark">{article.title}</h3>
         <div className="flex items-center space-x-1 text-xs">
           {getStatusIcon()}
-          <span className="font-retro">{getStatusText()}</span>
+          <span className="font-pixel">{getStatusText()}</span>
         </div>
       </div>
       
-      <p className="text-sm mb-3 line-clamp-2">{previewContent}</p>
+      <p className="text-sm mb-3 line-clamp-2 font-pixel-sans">{previewContent}</p>
       
       <div className="flex flex-wrap gap-2 mb-3">
         {article.tags.slice(0, 3).map(tag => (
           <span 
             key={tag} 
-            className="bg-gray-100 px-2 py-0.5 text-xs font-retro rounded"
+            className="bg-gray-100 px-2 py-0.5 text-xs font-pixel rounded"
           >
             {tag}
           </span>
         ))}
         {article.tags.length > 3 && (
-          <span className="text-xs font-retro">+{article.tags.length - 3} more</span>
+          <span className="text-xs font-pixel">+{article.tags.length - 3} more</span>
         )}
       </div>
       
-      <div className="flex justify-between items-center text-xs font-retro text-gray-600">
+      <div className="flex justify-between items-center text-xs font-pixel text-gray-600">
         <div className="flex items-center">
           {article.authorType === 'mentor' ? (
             <span className="flex items-center text-game-purple-dark">
@@ -101,7 +101,7 @@ const KnowledgeArticleCard = ({ article, onClick }: KnowledgeArticleCardProps) =
       
       {article.completionStatus === 'completed' && (
         <div className="absolute top-2 right-2">
-          <div className="bg-game-green-dark text-white text-xs font-retro px-2 py-0.5 rounded-full">
+          <div className="bg-game-green-dark text-white text-xs font-pixel px-2 py-0.5 rounded-full">
             Completed
           </div>
         </div>

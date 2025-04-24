@@ -5,7 +5,7 @@
 
 @layer components {
   .pixel-base {
-    @apply font-retro transition-all duration-100 ease-in-out;
+    @apply font-pixel transition-all duration-100 ease-in-out;
   }
 
   .pixel-button {
@@ -29,17 +29,17 @@
   
   /* New classes for the enhanced UI */
   .game-title {
-    @apply font-retro text-3xl md:text-4xl text-game-pixel-black;
+    @apply font-pixel text-3xl md:text-4xl text-game-pixel-black;
     @apply drop-shadow-[4px_4px_0px_rgba(0,0,0,0.2)];
   }
   
   .level-badge {
-    @apply inline-block font-retro text-xs bg-game-blue-dark text-white px-2 py-1 rounded;
+    @apply inline-block font-pixel text-xs bg-game-blue-dark text-white px-2 py-1 rounded;
     @apply border-2 border-game-pixel-black;
   }
   
   .level-badge-purple {
-    @apply inline-block font-retro text-xs bg-game-purple-dark text-white px-2 py-1 rounded;
+    @apply inline-block font-pixel text-xs bg-game-purple-dark text-white px-2 py-1 rounded;
     @apply border-2 border-game-pixel-black;
   }
   
