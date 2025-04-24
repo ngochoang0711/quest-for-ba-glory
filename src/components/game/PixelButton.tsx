@@ -6,15 +6,17 @@ type BaseButtonProps = {
   children: React.ReactNode;
   className?: string;
   disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const BaseButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
-  ({ children, className, disabled, ...props }, ref) => {
+  ({ children, className, disabled, type = "button", ...props }, ref) => {
     return (
       <button
         ref={ref}
         className={cn("pixel-base", className)}
         disabled={disabled}
+        type={type}
         {...props}
       >
         {children}
@@ -30,6 +32,7 @@ type PixelButtonProps = {
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 };
 
 const PixelButton = ({ 
@@ -37,7 +40,8 @@ const PixelButton = ({
   color = "blue", 
   className,
   onClick,
-  disabled = false
+  disabled = false,
+  type = "button"
 }: PixelButtonProps) => {
   const buttonClass = {
     blue: "pixel-button-blue",
@@ -54,6 +58,7 @@ const PixelButton = ({
       )}
       onClick={!disabled ? onClick : undefined}
       disabled={disabled}
+      type={type}
     >
       {children}
     </BaseButton>

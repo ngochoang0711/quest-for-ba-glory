@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { JournalEntry, JournalCategory } from "@/types/journal";
 import { X, Plus, Save, BookOpen, Archive } from "lucide-react";
@@ -58,12 +57,12 @@ const KnowledgeArticleForm = ({
 
   return (
     <div className="w-full">
-      <h2 className="font-retro text-xl mb-4 text-game-purple-dark">
+      <h2 className="font-pixel text-xl mb-4 text-game-purple-dark">
         {article?.id ? 'Edit Knowledge Article' : 'Create New Knowledge Article'}
       </h2>
       
       <DialogBox className="mb-6">
-        <p className="font-retro text-sm">
+        <p className="font-pixel text-sm">
           Share your BA knowledge with the community! Articles can be saved as drafts until you're ready to publish.
         </p>
       </DialogBox>
@@ -75,7 +74,7 @@ const KnowledgeArticleForm = ({
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-2 border-2 border-game-pixel-black font-retro text-sm"
+            className="w-full p-2 border-2 border-game-pixel-black font-pixel-sans text-sm"
             required
           />
         </div>
@@ -89,7 +88,7 @@ const KnowledgeArticleForm = ({
                 setCategory(e.target.value);
                 setSubcategory(''); // Reset subcategory when category changes
               }}
-              className="w-full p-2 border-2 border-game-pixel-black font-retro text-sm"
+              className="w-full p-2 border-2 border-game-pixel-black font-pixel-sans text-sm"
               required
             >
               <option value="">Select Category</option>
@@ -104,7 +103,7 @@ const KnowledgeArticleForm = ({
             <select
               value={subcategory}
               onChange={(e) => setSubcategory(e.target.value)}
-              className="w-full p-2 border-2 border-game-pixel-black font-retro text-sm"
+              className="w-full p-2 border-2 border-game-pixel-black font-pixel-sans text-sm"
               disabled={!selectedCategory?.subcategories?.length}
             >
               <option value="">Select Subcategory</option>
@@ -120,7 +119,7 @@ const KnowledgeArticleForm = ({
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="w-full p-2 border-2 border-game-pixel-black font-retro text-sm min-h-[200px]"
+            className="w-full p-2 border-2 border-game-pixel-black font-pixel-sans text-sm min-h-[200px]"
             required
           />
         </div>
@@ -133,7 +132,7 @@ const KnowledgeArticleForm = ({
               min="1"
               value={readTimeMinutes}
               onChange={(e) => setReadTimeMinutes(Number(e.target.value))}
-              className="w-full p-2 border-2 border-game-pixel-black font-retro text-sm"
+              className="w-full p-2 border-2 border-game-pixel-black font-pixel-sans text-sm"
             />
           </div>
           
@@ -144,7 +143,7 @@ const KnowledgeArticleForm = ({
               min="0"
               value={xpReward}
               onChange={(e) => setXpReward(Number(e.target.value))}
-              className="w-full p-2 border-2 border-game-pixel-black font-retro text-sm"
+              className="w-full p-2 border-2 border-game-pixel-black font-pixel-sans text-sm"
             />
           </div>
         </div>
@@ -154,7 +153,7 @@ const KnowledgeArticleForm = ({
           <div className="flex flex-wrap gap-2 mb-2">
             {tags.map(tag => (
               <div key={tag} className="bg-game-purple-light bg-opacity-20 px-2 py-1 rounded flex items-center">
-                <span className="text-xs font-retro mr-2">{tag}</span>
+                <span className="text-xs font-pixel-sans mr-2">{tag}</span>
                 <button 
                   type="button" 
                   onClick={() => removeTag(tag)}
@@ -173,7 +172,7 @@ const KnowledgeArticleForm = ({
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
               placeholder="Add a tag"
-              className="flex-1 p-2 border-2 border-game-pixel-black font-retro text-sm"
+              className="flex-1 p-2 border-2 border-game-pixel-black font-pixel-sans text-sm"
             />
             <button 
               type="button" 
@@ -195,7 +194,7 @@ const KnowledgeArticleForm = ({
                 onChange={() => setStatus('draft')}
                 className="mr-2"
               />
-              <span className="font-retro text-sm">Draft</span>
+              <span className="font-pixel-sans text-sm">Draft</span>
             </label>
             
             <label className="flex items-center cursor-pointer">
@@ -205,7 +204,7 @@ const KnowledgeArticleForm = ({
                 onChange={() => setStatus('published')}
                 className="mr-2"
               />
-              <span className="font-retro text-sm">Publish</span>
+              <span className="font-pixel-sans text-sm">Publish</span>
             </label>
             
             {article?.id && (
@@ -216,7 +215,7 @@ const KnowledgeArticleForm = ({
                   onChange={() => setStatus('archived')}
                   className="mr-2"
                 />
-                <span className="font-retro text-sm">Archive</span>
+                <span className="font-pixel-sans text-sm">Archive</span>
               </label>
             )}
           </div>
@@ -224,9 +223,8 @@ const KnowledgeArticleForm = ({
         
         <div className="flex justify-between pt-4">
           <PixelButton 
-            type="button" 
-            color="blue" 
             onClick={onCancel}
+            color="blue" 
             className="flex items-center"
           >
             <X className="w-4 h-4 mr-2" /> 
