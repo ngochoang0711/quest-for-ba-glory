@@ -1,13 +1,23 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useGame } from "@/contexts/GameContext";
 import PixelButton from "./PixelButton";
 import DialogBox from "./DialogBox";
 import { Handshake, Users, MessageSquare, ChartBar, Layers } from "lucide-react";
+import { toast } from "sonner";
 
 const ScenarioScreen = () => {
   const { state, dispatch } = useGame();
-  const { currentScenario, character } = state;
+  const { currentScenario, character, completedScenarios } = state;
+
+  useEffect(() => {
+    if (currentScenario) {
+      const isFirstTime = !completedScenarios.includes(currentScenario.id);
+      if (!isFirstTime) {
+        toast.info("You've completed this scenario before. Replay to practice!");
+      }
+    }
+  }, [currentScenario, completedScenarios]);
 
   if (!currentScenario || !character) return null;
 
@@ -15,6 +25,10 @@ const ScenarioScreen = () => {
     const choice = currentScenario.choices.find(c => c.id === choiceId);
     if (choice) {
       dispatch({ type: 'MAKE_CHOICE', payload: choice });
+      
+      // Log completion for debugging
+      console.log(`Completed scenario: ${currentScenario.id}`);
+      console.log(`Updated completed scenarios:`, [...completedScenarios, currentScenario.id]);
     }
   };
 

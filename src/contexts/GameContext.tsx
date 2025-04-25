@@ -527,6 +527,161 @@ const SCENARIOS: Scenario[] = [
       },
     ],
   },
+  // New Level 1 Scenario
+  {
+    id: 'process-improvement',
+    title: 'Process Improvement Challenge',
+    description: 'The team needs to streamline their requirements gathering process. What approach do you suggest?',
+    level: 1,
+    npcName: 'Process Improvement Manager',
+    npcSprite: '👨‍💻',
+    choices: [
+      {
+        id: 'template-standardization',
+        text: 'Create standardized templates for all documentation',
+        outcomes: {
+          experience: 35,
+          skillIncrease: [
+            { skillId: 'documentation', amount: 2 },
+            { skillId: 'process', amount: 1 },
+          ],
+          resultText: 'Your standardized templates improved documentation quality and reduced the time needed for requirements gathering by 20%.',
+        },
+      },
+      {
+        id: 'automation-tools',
+        text: 'Implement automation tools for requirements management',
+        outcomes: {
+          experience: 40,
+          skillIncrease: [
+            { skillId: 'technical', amount: 2 },
+            { skillId: 'process', amount: 2 },
+          ],
+          resultText: 'The automation tools you implemented significantly reduced manual effort and improved requirements traceability across the organization.',
+        },
+      },
+      {
+        id: 'agile-adoption',
+        text: 'Adopt agile methodologies for faster feedback cycles',
+        outcomes: {
+          experience: 45,
+          skillIncrease: [
+            { skillId: 'agile', amount: 3 },
+            { skillId: 'process', amount: 1 },
+          ],
+          resultText: 'The transition to agile methodologies was challenging but ultimately successful, resulting in faster delivery and better stakeholder alignment.',
+        },
+      },
+    ],
+  },
+  
+  // New Level 1 Scenario
+  {
+    id: 'technical-feasibility',
+    title: 'Technical Feasibility Study',
+    description: 'Stakeholders have requested a new feature, but the development team is concerned about technical feasibility. How do you proceed?',
+    level: 1,
+    npcName: 'Lead Developer',
+    npcSprite: '👩‍💻',
+    choices: [
+      {
+        id: 'detailed-analysis',
+        text: 'Conduct a detailed technical analysis with the development team',
+        outcomes: {
+          experience: 30,
+          skillIncrease: [
+            { skillId: 'technical', amount: 2 },
+            { skillId: 'analysis', amount: 1 },
+          ],
+          resultText: 'Your analysis revealed key technical constraints that helped refine the feature request into something more feasible while still meeting business needs.',
+        },
+      },
+      {
+        id: 'prototype',
+        text: 'Create a prototype to test the concept',
+        outcomes: {
+          experience: 35,
+          skillIncrease: [
+            { skillId: 'technical', amount: 1 },
+            { skillId: 'requirements', amount: 2 },
+          ],
+          resultText: 'The prototype demonstrated both the possibilities and limitations of the feature, helping stakeholders understand what was truly feasible.',
+        },
+      },
+      {
+        id: 'alternatives',
+        text: 'Explore alternative solutions with the stakeholders',
+        outcomes: {
+          experience: 40,
+          skillIncrease: [
+            { skillId: 'communication', amount: 2 },
+            { skillId: 'negotiation', amount: 1 },
+          ],
+          resultText: 'By exploring alternatives, you found a solution that was both technically feasible and met the business needs, resulting in a win-win outcome.',
+        },
+      },
+    ],
+  },
+  
+  // New Level 2 Scenario
+  {
+    id: 'data-governance',
+    title: 'Data Governance Initiative',
+    description: 'Your organization is implementing a data governance framework. As a senior BA, you need to help define business data policies and standards.',
+    level: 2,
+    npcName: 'Chief Data Officer',
+    npcSprite: '👩‍💼',
+    choices: [
+      {
+        id: 'cross-functional',
+        text: 'Establish a cross-functional data governance committee',
+        skillRequirements: [
+          { skillId: 'communication', minLevel: 4 },
+          { skillId: 'process', minLevel: 3 }
+        ],
+        outcomes: {
+          experience: 55,
+          skillIncrease: [
+            { skillId: 'communication', amount: 2 },
+            { skillId: 'process', amount: 2 },
+          ],
+          resultText: 'Your committee brought together diverse perspectives from across the organization, resulting in comprehensive data governance policies with strong buy-in from all departments.',
+        },
+      },
+      {
+        id: 'metadata-catalog',
+        text: 'Develop a business metadata catalog to document all key data elements',
+        skillRequirements: [
+          { skillId: 'documentation', minLevel: 5 },
+          { skillId: 'technical', minLevel: 3 }
+        ],
+        outcomes: {
+          experience: 60,
+          skillIncrease: [
+            { skillId: 'documentation', amount: 2 },
+            { skillId: 'technical', amount: 2 },
+            { skillId: 'analysis', amount: 1 },
+          ],
+          resultText: 'Your metadata catalog became the definitive source of truth for data definitions across the organization, significantly improving data quality and consistency.',
+        },
+      },
+      {
+        id: 'compliance-focus',
+        text: 'Focus on regulatory compliance requirements first',
+        skillRequirements: [
+          { skillId: 'analysis', minLevel: 4 }
+        ],
+        outcomes: {
+          experience: 45,
+          skillIncrease: [
+            { skillId: 'analysis', amount: 2 },
+            { skillId: 'documentation', amount: 1 },
+          ],
+          resultText: 'Your compliance-first approach ensured the organization met all regulatory requirements, but a more holistic approach might have yielded additional business benefits.',
+        },
+      },
+    ],
+  },
 ];
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
