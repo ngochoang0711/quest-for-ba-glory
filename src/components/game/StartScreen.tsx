@@ -1,13 +1,13 @@
-
 import React, { useState, useEffect } from "react";
 import PixelButton from "./PixelButton";
 import { useGame } from "@/contexts/GameContext";
 import DialogBox from "./DialogBox";
 import PixelProgressBar from "./PixelProgressBar";
-import { BookOpen, Map, Star, Users, Settings, HelpCircle, ArrowRight } from "lucide-react";
+import { BookOpen, Map, Star, Users, Settings, HelpCircle, ArrowRight, Save, RefreshCw } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
 
 const StartScreen = () => {
-  const { state, dispatch } = useGame();
+  const { state, dispatch, resetGame, saveGame } = useGame();
   const { character } = state;
   const [showTutorial, setShowTutorial] = useState(false);
   const [isNewPlayer, setIsNewPlayer] = useState(!character);
@@ -55,6 +55,27 @@ const StartScreen = () => {
     // If new player, move them to character creation after seeing tutorial
     if (isNewPlayer) {
       dispatch({ type: 'START_GAME' });
+    }
+  };
+
+  const handleSaveGame = () => {
+    saveGame();
+    toast({
+      title: "Game Saved",
+      description: "Your progress has been saved to this browser.",
+      duration: 3000,
+    });
+  };
+
+  const handleResetGame = () => {
+    if (window.confirm("Are you sure you want to reset your game? All progress will be lost.")) {
+      resetGame();
+      toast({
+        title: "Game Reset",
+        description: "Your progress has been reset to the beginning.",
+        variant: "destructive",
+        duration: 3000,
+      });
     }
   };
 
@@ -180,7 +201,7 @@ const StartScreen = () => {
       </div>
       
       {/* Navigation Options */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+      <div className="grid grid-cols-2 gap-3 mb-4">
         <PixelButton 
           color="purple" 
           onClick={handleStartQuest}
@@ -210,11 +231,32 @@ const StartScreen = () => {
         
         <PixelButton 
           color="blue" 
+          onClick={handleSaveGame}
+          className="flex items-center justify-center"
+        >
+          <Save className="mr-2 w-4 h-4" />
+          <span>Save Game</span>
+        </PixelButton>
+      </div>
+
+      {/* Settings row */}
+      <div className="grid grid-cols-2 gap-3">
+        <PixelButton 
+          color="blue" 
           className="flex items-center justify-center opacity-50 cursor-not-allowed"
           disabled={true}
         >
           <Settings className="mr-2 w-4 h-4" />
           <span>Settings</span>
+        </PixelButton>
+        
+        <PixelButton 
+          color="blue" 
+          onClick={handleResetGame}
+          className="flex items-center justify-center"
+        >
+          <RefreshCw className="mr-2 w-4 h-4" />
+          <span>Reset Game</span>
         </PixelButton>
       </div>
     </div>

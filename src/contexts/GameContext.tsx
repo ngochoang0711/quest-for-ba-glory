@@ -1,5 +1,4 @@
-
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { GameState, BACharacter, Scenario, ScenarioChoice, SkillCategory } from '@/types/game';
 
 // Default skills for all characters
@@ -55,6 +54,9 @@ const DEFAULT_CHARACTERS: BACharacter[] = [
   },
 ];
 
+// Local Storage key
+const GAME_STATE_STORAGE_KEY = 'ba-career-quest-state';
+
 // Initial state
 const initialState: GameState = {
   stage: 'start',
@@ -63,6 +65,21 @@ const initialState: GameState = {
   completedScenarios: [],
   choiceResult: null,
   skillCategories: SKILL_CATEGORIES,
+};
+
+// Load saved state from localStorage
+const loadSavedState = (): GameState | null => {
+  try {
+    const savedState = localStorage.getItem(GAME_STATE_STORAGE_KEY);
+    if (savedState) {
+      const parsedState = JSON.parse(savedState);
+      return parsedState;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error loading saved game:', error);
+    return null;
+  }
 };
 
 // Actions
@@ -75,29 +92,35 @@ type GameAction =
   | { type: 'RESET_GAME' }
   | { type: 'OPEN_SKILL_TREE' }
   | { type: 'ALLOCATE_SKILL_POINT'; payload: { skillId: string } }
-  | { type: 'RETURN_TO_MAP' };
+  | { type: 'RETURN_TO_MAP' }
+  | { type: 'SAVE_GAME' };
 
 // Reducer
 function gameReducer(state: GameState, action: GameAction): GameState {
+  let newState: GameState;
+  
   switch (action.type) {
     case 'START_GAME':
-      return {
+      newState = {
         ...state,
         stage: 'character',
       };
+      break;
     case 'SELECT_CHARACTER':
-      return {
+      newState = {
         ...state,
         character: action.payload,
         stage: 'map',
       };
+      break;
     case 'START_SCENARIO':
-      return {
+      newState = {
         ...state,
         currentScenario: action.payload,
         stage: 'scenario',
         choiceResult: null,
       };
+      break;
     case 'MAKE_CHOICE': {
       const choice = action.payload;
       const character = state.character!;
@@ -138,7 +161,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       // Award skill points if leveled up
       const newSkillPoints = character.skillPoints + (leveledUp ? 2 : 0);
       
-      return {
+      newState = {
         ...state,
         character: {
           ...character,
@@ -155,22 +178,28 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           skillsIncreased,
         },
       };
+      break;
     }
     case 'CONTINUE_TO_MAP':
-      return {
+      newState = {
         ...state,
         stage: 'map',
         currentScenario: null,
       };
+      break;
     case 'RESET_GAME':
-      return initialState;
+      // Clear localStorage when resetting
+      localStorage.removeItem(GAME_STATE_STORAGE_KEY);
+      newState = initialState;
+      break;
 
-    // New actions for skill tree
+    // Actions for skill tree
     case 'OPEN_SKILL_TREE':
-      return {
+      newState = {
         ...state,
         stage: 'skilltree',
       };
+      break;
     case 'ALLOCATE_SKILL_POINT': {
       const character = state.character!;
       if (character.skillPoints <= 0) return state;
@@ -185,7 +214,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         return skill;
       });
 
-      return {
+      newState = {
         ...state,
         character: {
           ...character,
@@ -193,15 +222,30 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           skillPoints: character.skillPoints - 1,
         },
       };
+      break;
     }
     case 'RETURN_TO_MAP':
-      return {
+      newState = {
         ...state,
         stage: 'map',
       };
+      break;
+    case 'SAVE_GAME':
+      // Just return current state, but will trigger save in useEffect
+      newState = { ...state };
+      break;
     default:
       return state;
   }
+  
+  // Save state to localStorage after each action
+  try {
+    localStorage.setItem(GAME_STATE_STORAGE_KEY, JSON.stringify(newState));
+  } catch (error) {
+    console.error('Error saving game state:', error);
+  }
+  
+  return newState;
 }
 
 // Context
@@ -210,6 +254,8 @@ type GameContextType = {
   dispatch: React.Dispatch<GameAction>;
   availableCharacters: BACharacter[];
   scenarios: Scenario[];
+  resetGame: () => void;
+  saveGame: () => void;
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -484,13 +530,26 @@ const SCENARIOS: Scenario[] = [
 ];
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = useReducer(gameReducer, initialState);
+  // Try to load saved state, fall back to initial state if not available
+  const savedState = loadSavedState();
+  const [state, dispatch] = useReducer(gameReducer, savedState || initialState);
+
+  // Helper functions for common actions
+  const resetGame = () => {
+    dispatch({ type: 'RESET_GAME' });
+  };
+  
+  const saveGame = () => {
+    dispatch({ type: 'SAVE_GAME' });
+  };
 
   const value = {
     state,
     dispatch,
     availableCharacters: DEFAULT_CHARACTERS,
     scenarios: SCENARIOS,
+    resetGame,
+    saveGame,
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
