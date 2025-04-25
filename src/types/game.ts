@@ -15,6 +15,15 @@ export type SkillCategory = {
   skills: string[]; // Skill IDs in this category
 };
 
+export type BATool = {
+  id: string;
+  name: string;
+  description: string;
+  icon: string; // Lucide icon name
+  levelRequired: number;
+  unlocked: boolean;
+};
+
 export type BACharacter = {
   id: string;
   name: string;
@@ -23,6 +32,7 @@ export type BACharacter = {
   experience: number;
   skills: BASkill[];
   skillPoints: number; // Available skill points to allocate
+  tools: BATool[]; // Add tools to character
 };
 
 export type ScenarioChoice = {
@@ -51,6 +61,7 @@ export type Scenario = {
   npcName?: string;
   npcSprite?: string;
   choices: ScenarioChoice[];
+  toolReward?: string; // Add optional tool reward
 };
 
 export type GameStage = "start" | "character" | "map" | "scenario" | "result" | "skilltree" | "journal";
@@ -68,6 +79,7 @@ export type GameState = {
       name: string;
       amount: number;
     }>;
+    toolUnlocked?: string; // Add optional tool unlock notification
   } | null;
   skillCategories: SkillCategory[]; // New field for organizing skills
 };
