@@ -23,32 +23,30 @@ const ScenarioScreen = () => {
   const handleMakeChoice = (choiceId: string) => {
     const choice = currentScenario.choices.find(c => c.id === choiceId);
     if (choice) {
-      // Check if this scenario has a tool reward
-      if (currentScenario.toolReward && !character.tools.find(t => t.id === currentScenario.toolReward)) {
-        // Add tool to character
+      // Handle tool unlocking first if this scenario has a tool reward
+      if (currentScenario.toolReward && !character.tools.find(t => t.id === currentScenario.toolReward)?.unlocked) {
         const tool = character.tools.find(t => t.id === currentScenario.toolReward);
-        if (tool && !tool.unlocked && character.level >= tool.levelRequired) {
-          // We'll modify this to use an existing action type since UNLOCK_TOOL doesn't exist
+        if (tool && character.level >= tool.levelRequired) {
+          // Update character tools in state
+          const updatedCharacter = {
+            ...character,
+            tools: character.tools.map(t => 
+              t.id === currentScenario.toolReward ? { ...t, unlocked: true } : t
+            )
+          };
+          
+          // Save the updated character state
           dispatch({ 
-            type: 'SAVE_GAME', 
-            // We'll handle the tool unlocking in the component instead
+            type: 'SAVE_GAME',
+            payload: { character: updatedCharacter }
           });
-          
-          // Update the tool directly in the character object
-          const updatedTools = character.tools.map(t => 
-            t.id === currentScenario.toolReward ? { ...t, unlocked: true } : t
-          );
-          
-          // Update character in state (this is a workaround since we don't have an UNLOCK_TOOL action)
-          character.tools = updatedTools;
           
           toast.success(`🔧 New tool unlocked: ${tool.name}!`);
         }
       }
 
+      // Process the choice
       dispatch({ type: 'MAKE_CHOICE', payload: choice });
-      console.log(`Completed scenario: ${currentScenario.id}`);
-      console.log(`Updated completed scenarios:`, [...completedScenarios, currentScenario.id]);
     }
   };
 

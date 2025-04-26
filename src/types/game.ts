@@ -83,3 +83,15 @@ export type GameState = {
   } | null;
   skillCategories: SkillCategory[]; // New field for organizing skills
 };
+
+type GameAction =
+  | { type: 'START_GAME' }
+  | { type: 'SELECT_CHARACTER'; payload: BACharacter }
+  | { type: 'START_SCENARIO'; payload: Scenario }
+  | { type: 'MAKE_CHOICE'; payload: ScenarioChoice }
+  | { type: 'CONTINUE_TO_MAP' }
+  | { type: 'RESET_GAME' }
+  | { type: 'OPEN_SKILL_TREE' }
+  | { type: 'ALLOCATE_SKILL_POINT'; payload: { skillId: string } }
+  | { type: 'RETURN_TO_MAP' }
+  | { type: 'SAVE_GAME'; payload?: { character?: BACharacter } };

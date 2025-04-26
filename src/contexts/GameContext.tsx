@@ -131,7 +131,7 @@ type GameAction =
   | { type: 'OPEN_SKILL_TREE' }
   | { type: 'ALLOCATE_SKILL_POINT'; payload: { skillId: string } }
   | { type: 'RETURN_TO_MAP' }
-  | { type: 'SAVE_GAME' };
+  | { type: 'SAVE_GAME'; payload?: { character?: BACharacter } };
 
 // Reducer
 function gameReducer(state: GameState, action: GameAction): GameState {
@@ -268,10 +268,17 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         stage: 'map',
       };
       break;
-    case 'SAVE_GAME':
-      // Just return current state, but will trigger save in useEffect
-      newState = { ...state };
+    case 'SAVE_GAME': {
+      if (action.payload?.character) {
+        newState = {
+          ...state,
+          character: action.payload.character
+        };
+      } else {
+        newState = { ...state };
+      }
       break;
+    }
     default:
       return state;
   }
