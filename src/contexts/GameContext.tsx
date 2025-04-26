@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import { GameState, BACharacter, Scenario, ScenarioChoice, SkillCategory } from '@/types/game';
+import { GameState, BACharacter, Scenario, ScenarioChoice, SkillCategory, BATool } from '@/types/game';
 
 // Default skills for all characters
 const DEFAULT_SKILLS = [
@@ -32,6 +32,42 @@ const SKILL_CATEGORIES: SkillCategory[] = [
   },
 ];
 
+// Default tools for all characters
+const DEFAULT_TOOLS: BATool[] = [
+  { 
+    id: 'documentation', 
+    name: 'Documentation Templates', 
+    description: 'Standardized templates for requirements documents', 
+    icon: 'file', 
+    levelRequired: 1, 
+    unlocked: true 
+  },
+  { 
+    id: 'process-mapping', 
+    name: 'Process Mapping Tool', 
+    description: 'Tool for visualizing business processes', 
+    icon: 'workflow', 
+    levelRequired: 2, 
+    unlocked: false 
+  },
+  { 
+    id: 'data-modeling', 
+    name: 'Data Modeling Tool', 
+    description: 'Create entity relationship diagrams', 
+    icon: 'database', 
+    levelRequired: 3, 
+    unlocked: false 
+  },
+  { 
+    id: 'user-stories', 
+    name: 'User Story Builder', 
+    description: 'Create effective agile user stories', 
+    icon: 'users', 
+    levelRequired: 2, 
+    unlocked: false 
+  },
+];
+
 // Default characters
 const DEFAULT_CHARACTERS: BACharacter[] = [
   {
@@ -42,6 +78,7 @@ const DEFAULT_CHARACTERS: BACharacter[] = [
     experience: 0,
     skills: DEFAULT_SKILLS,
     skillPoints: 3,
+    tools: [...DEFAULT_TOOLS], // Add tools to the character
   },
   {
     id: 'veteran',
@@ -51,6 +88,7 @@ const DEFAULT_CHARACTERS: BACharacter[] = [
     experience: 0,
     skills: DEFAULT_SKILLS,
     skillPoints: 5,
+    tools: [...DEFAULT_TOOLS], // Add tools to the character
   },
 ];
 

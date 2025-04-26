@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useGame } from "@/contexts/GameContext";
 import PixelButton from "./PixelButton";
 import DialogBox from "./DialogBox";
-import { Handshake, Users, MessageSquare, ChartBar, Layers, Tool } from "lucide-react";
+import { Handshake, Users, MessageSquare, ChartBar, Layers, Wrench } from "lucide-react";
 import { toast } from "sonner";
 
 const ScenarioScreen = () => {
@@ -28,10 +28,20 @@ const ScenarioScreen = () => {
         // Add tool to character
         const tool = character.tools.find(t => t.id === currentScenario.toolReward);
         if (tool && !tool.unlocked && character.level >= tool.levelRequired) {
+          // We'll modify this to use an existing action type since UNLOCK_TOOL doesn't exist
           dispatch({ 
-            type: 'UNLOCK_TOOL', 
-            payload: { toolId: currentScenario.toolReward }
+            type: 'SAVE_GAME', 
+            // We'll handle the tool unlocking in the component instead
           });
+          
+          // Update the tool directly in the character object
+          const updatedTools = character.tools.map(t => 
+            t.id === currentScenario.toolReward ? { ...t, unlocked: true } : t
+          );
+          
+          // Update character in state (this is a workaround since we don't have an UNLOCK_TOOL action)
+          character.tools = updatedTools;
+          
           toast.success(`🔧 New tool unlocked: ${tool.name}!`);
         }
       }
@@ -106,7 +116,7 @@ const ScenarioScreen = () => {
             
             {currentScenario.toolReward && (
               <div className="mt-3 flex items-center gap-2 px-2 py-1 bg-game-green-dark bg-opacity-10 border border-game-green-dark rounded-sm">
-                <Tool className="h-4 w-4 text-game-green-dark" />
+                <Wrench className="h-4 w-4 text-game-green-dark" />
                 <p className="text-xs font-retro text-game-green-dark">
                   Complete this scenario to unlock a new tool!
                 </p>
@@ -178,7 +188,7 @@ const ScenarioScreen = () => {
               key={tool.id} 
               className="pixel-container p-3 flex flex-col items-center gap-2 border-l-4 border-l-game-green-dark"
             >
-              <Tool className="h-5 w-5 text-game-green-dark" />
+              <Wrench className="h-5 w-5 text-game-green-dark" />
               <div className="text-center">
                 <div className="font-retro text-xs mb-1">{tool.name}</div>
                 <div className="text-xs text-gray-600">{tool.description}</div>

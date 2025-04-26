@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Tool } from 'lucide-react';
+import { Wrench } from 'lucide-react';
 import { BATool } from '@/types/game';
 
 interface ToolsPanelProps {
@@ -24,7 +24,7 @@ const ToolsPanel = ({ tools, characterLevel }: ToolsPanelProps) => {
             }`}
           >
             <div className="flex items-start gap-3">
-              <Tool className={`h-5 w-5 ${
+              <Wrench className={`h-5 w-5 ${
                 tool.unlocked ? 'text-game-green-dark' : 'text-gray-400'
               }`} />
               <div>
