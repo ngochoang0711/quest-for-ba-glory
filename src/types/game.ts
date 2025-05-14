@@ -1,3 +1,4 @@
+
 // Game types
 
 export type BASkill = {
@@ -82,6 +83,11 @@ export type GameState = {
     toolUnlocked?: string; // Add optional tool unlock notification
   } | null;
   skillCategories: SkillCategory[]; // New field for organizing skills
+  // Adding AI curriculum progress tracking
+  aiCurriculumProgress?: {
+    activeModuleId: string;
+    completedTopics: string[];
+  };
 };
 
 type GameAction =
@@ -94,4 +100,6 @@ type GameAction =
   | { type: 'OPEN_SKILL_TREE' }
   | { type: 'ALLOCATE_SKILL_POINT'; payload: { skillId: string } }
   | { type: 'RETURN_TO_MAP' }
+  | { type: 'OPEN_JOURNAL'; payload?: { moduleId?: string } }
+  | { type: 'COMPLETE_TOPIC'; payload: { topicId: string } }
   | { type: 'SAVE_GAME'; payload?: { character?: BACharacter } };
